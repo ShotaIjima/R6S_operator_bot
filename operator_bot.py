@@ -12,46 +12,40 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-        global member
-        global operator_a
-        global operatot_d
-        s_mess = ""
-        if message.author.bot:
-            return
-        print(message.author.mention,message.content.split())
-
-        # random ope
-        if message.content.split()[0] == "/set":
-            if message.content.split()[1].isdecimal():
-                member = np.arange(int(message.content.split()[1]))
-                await message.channel.send('メンバーを'+message.content.split()[1]+"人にセットしました！")
-            else:
-                await message.channel.send("適切な値を入力して！")
-                return
-
-        elif '/at' in message.content:
-            random.shuffle(operator_a)
-            for op,mem in zip(operator_a,member):
-                s_mess += str(mem)+" ---> "+op
-            await message.channel.send(s_mess)
-        elif '/df' in message.content:
-            random.shuffle(operator_d)
-            for op,mem in zip(operator_d,member):
-                s_mess += str(mem)+" ---> "+op
-            await message.channel.send(s_mess)
+    global member
+    if message.author.bot:
+        return
+    print(message.author.mention,message.content.split())
+    if message.content.split()[0] == "/set":
+        if message.content.split()[1].isdecimal():
+            member = np.arange(int(message.content.split()[1]))
+            await message.channel.send('メンバーを'+message.content.split()[1]+"人にセットしました！")
         else:
             await message.channel.send("適切な値を入力して！")
             return
+    elif '/at' in message.content:
+        random.shuffle(operator_a)
+        await message.channel.send(make_mess(operator_a,member))
+    elif '/df' in message.content:
+        random.shuffle(operator_d)
+        await message.channel.send(make_mess(operator_d,member))
+    else:
+        await message.channel.send("適切な値を入力して！")
+        return
 
-        if len(member) == 0:
-            await message.channel.send("メンバーがいません！")
-            return
+    if len(member) == 0:
+        await message.channel.send("メンバーがいません！")
+        return
 
+def make_mess(operator,member):
+    s_mess = ""
+    for op,mem in zip(operator,member):
+        s_mess += str(mem)+" ---> "+op
+    return s_mess
 
 TOKEN = os.environ.get('DISC_TOKEN')
-member = []
 with open('ope_a.txt', 'r') as f:
-    operetor_a = [line for line in f]
+    operator_a = [line for line in f]
 with open('ope_d.txt', 'r') as f:
-    operetor_d = [line for line in f]
+    operator_d = [line for line in f]
 client.run(TOKEN)
