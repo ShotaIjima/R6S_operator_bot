@@ -1,4 +1,5 @@
 # coding: utf-8
+import os
 import discord
 import random
 import numpy as np
@@ -12,17 +13,12 @@ async def on_ready():
 @client.event
 async def on_message(message):
         global member
-        global operetor_a
-        global operetot_d
+        global operator_a
+        global operatot_d
         s_mess = ""
         if message.author.bot:
             return
         print(message.author.mention,message.content.split())
-        if 'リージョン' in message.content:
-            await message.channel.send('いぐぱい')
-            return
-        if "@312972540907880449" in message.author.mention:
-            await message.channel.send('お前リージョンだな？？')
 
         # random ope
         if message.content.split()[0] == "/set":
@@ -34,13 +30,13 @@ async def on_message(message):
                 return
 
         elif '/at' in message.content:
-            random.shuffle(operetor_a)
-            for op,mem in zip(operetor_a,member):
+            random.shuffle(operator_a)
+            for op,mem in zip(operator_a,member):
                 s_mess += str(mem)+" ---> "+op
             await message.channel.send(s_mess)
         elif '/df' in message.content:
-            random.shuffle(operetor_d)
-            for op,mem in zip(operetor_d,member):
+            random.shuffle(operator_d)
+            for op,mem in zip(operator_d,member):
                 s_mess += str(mem)+" ---> "+op
             await message.channel.send(s_mess)
         else:
@@ -52,7 +48,7 @@ async def on_message(message):
             return
 
 
-TOKEN = "NTc0NDM2MzM2NjY5NDI1Njg3.XM5Xog.klfidIQI731FJgXY7wkvY2p21Lg"
+TOKEN = os.environ.get('DISC_TOKEN')
 member = []
 with open('ope_a.txt', 'r') as f:
     operetor_a = [line for line in f]
