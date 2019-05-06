@@ -20,9 +20,13 @@ async def on_message(message):
         if message.content.split()[1].isdecimal():
             member = np.arange(int(message.content.split()[1]))
             await message.channel.send('メンバーを'+message.content.split()[1]+"人にセットしました！")
+            return
         else:
             await message.channel.send("適切な値を入力して！")
             return
+    elif len(member) == 0:
+        await message.channel.send("メンバーがいません！")
+        return
     elif '/at' in message.content:
         random.shuffle(operator_a)
         await message.channel.send(make_mess(operator_a,member))
@@ -33,19 +37,16 @@ async def on_message(message):
         await message.channel.send("適切な値を入力して！")
         return
 
-    if len(member) == 0:
-        await message.channel.send("メンバーがいません！")
-        return
-
 def make_mess(operator,member):
     s_mess = ""
     for op,mem in zip(operator,member):
         s_mess += str(mem)+" ---> "+op
     return s_mess
 
-TOKEN = os.environ.get('DISC_TOKEN')
 with open('ope_a.txt', 'r') as f:
     operator_a = [line for line in f]
 with open('ope_d.txt', 'r') as f:
     operator_d = [line for line in f]
+member = []
+TOKEN = os.environ.get('DISC_TOKEN')
 client.run(TOKEN)
