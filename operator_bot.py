@@ -59,4 +59,3 @@ with open('ope_a.txt', 'r') as f:
 with open('ope_d.txt', 'r') as f:
     operetor_d = [line for line in f]
 client.run(TOKEN)
-
