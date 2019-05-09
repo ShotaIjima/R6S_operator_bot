@@ -26,9 +26,9 @@ async def on_message(message):
             await message.channel.send("適切な値を入力して！")
             return
     elif len(member) == 0:
-        #await message.channel.send("メンバーがいません！")
+        await message.channel.send("メンバーがいません！")
         return
-    elif '/ata' in message.content:
+    elif message.content == '/ata':
         for i in range(1,6,2):
             if i == 5:
                 a_mess += "延長ラウンド_A\n"
@@ -43,7 +43,7 @@ async def on_message(message):
             random.shuffle(operator_d)
             a_mess += make_mess(operator_d,member)
         await message.channel.send(a_mess)
-    elif '/dfa' in message.content:
+    elif message.content == '/dfa':
         for i in range(1,6,2):
             if i == 5:
                 a_mess += "延長ラウンド_D\n"
@@ -58,14 +58,14 @@ async def on_message(message):
             random.shuffle(operator_a)
             a_mess += make_mess(operator_a,member)
         await message.channel.send(a_mess)
-    elif '/at' in message.content:
+    elif message.content == '/at':
         random.shuffle(operator_a)
         await message.channel.send(make_mess(operator_a,member))
-    elif '/df' in message.content:
+    elif message.content == '/df':
         random.shuffle(operator_d)
         await message.channel.send(make_mess(operator_d,member))
     else:
-        #await message.channel.send("適切な値を入力して！")
+        await message.channel.send("適切な値を入力して！")
         return
 
 def make_mess(operator,member):
