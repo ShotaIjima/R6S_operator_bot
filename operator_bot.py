@@ -13,6 +13,7 @@ async def on_ready():
 @client.event
 async def on_message(message):
     global member
+    a_mess = ""
     if message.author.bot:
         return
     print(message.author.mention,message.content.split())
@@ -25,8 +26,38 @@ async def on_message(message):
             await message.channel.send("適切な値を入力して！")
             return
     elif len(member) == 0:
-        await message.channel.send("メンバーがいません！")
+        #await message.channel.send("メンバーがいません！")
         return
+    elif '/ata' in message.content:
+        for i in range(1,6,2):
+            if i == 5:
+                a_mess += "延長ラウンド_A\n"
+            else:
+                a_mess += "ラウンド"+str(i)+"_A\n"
+            random.shuffle(operator_a)
+            a_mess += make_mess(operator_a,member)
+            if i == 5:
+                a_mess += "延長ラウンド_D\n"
+            else:
+                a_mess += "ラウンド"+str(i+1)+"_D\n"
+            random.shuffle(operator_d)
+            a_mess += make_mess(operator_d,member)
+        await message.channel.send(a_mess)
+    elif '/dfa' in message.content:
+        for i in range(1,6,2):
+            if i == 5:
+                a_mess += "延長ラウンド_D\n"
+            else:
+                a_mess += "ラウンド"+str(i)+"_D\n"
+            random.shuffle(operator_d)
+            a_mess += make_mess(operator_d,member)
+            if i == 5:
+                a_mess += "延長ラウンド_A\n"
+            else:
+                a_mess += "ラウンド"+str(i+1)+"_A\n"
+            random.shuffle(operator_a)
+            a_mess += make_mess(operator_a,member)
+        await message.channel.send(a_mess)
     elif '/at' in message.content:
         random.shuffle(operator_a)
         await message.channel.send(make_mess(operator_a,member))
@@ -34,13 +65,14 @@ async def on_message(message):
         random.shuffle(operator_d)
         await message.channel.send(make_mess(operator_d,member))
     else:
-        await message.channel.send("適切な値を入力して！")
+        #await message.channel.send("適切な値を入力して！")
         return
 
 def make_mess(operator,member):
     s_mess = ""
     for op,mem in zip(operator,member):
         s_mess += str(mem)+" ---> "+op
+    s_mess += "\n"
     return s_mess
 
 with open('ope_a.txt', 'r') as f:
